@@ -4,7 +4,7 @@
 - ✅ Support hmr in development environment.
 - ✅ You can use vue components inside markdown files.
 - ✅ You can also use markdown files as components in vue files.
-- ❗ You must install [vite-plugin-vue2](https://github.com/underfin/vite-plugin-vue2) before using vite-plugin-md2vue2.
+- ❗ You must install [vite-plugin-vue2](https://github.com/underfin/vite-plugin-vue2) before using `vite-plugin-md2vue2`.
 
 ## Install
 
