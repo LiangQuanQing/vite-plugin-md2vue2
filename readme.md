@@ -1,6 +1,6 @@
 ## Description
 
-- 🌟 A vite plugin for converting markdown files into vue2 render functions.
+- 🌟 [`vite-plugin-md2vue2`](https://www.npmjs.com/package/vite-plugin-md2vue2) is a vite plugin for converting markdown files into vue2 render functions.
 - ✅ Support hmr in development environment.
 - ✅ You can use vue components inside markdown files.
 - ✅ You can also use markdown files as components in vue files.
