@@ -1,0 +1,25 @@
+{
+  "name": "vite-plugin-md2vue2",
+  "version": "1.0.0",
+  "description": "A vite plugin for converting markdown files into vue2 render functions.",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "scripts": {
+    "build": "rm -rf dist && npm run build-bundle",
+    "build-bundle": "npm run build-bundle:cjs && npm run build-bundle:esm",
+    "build-bundle:cjs": "esbuild src/index.ts --bundle --platform=node --format=cjs --external:vite --external:vue-template-compiler --external:vue-template-es2015-compiler --external:markdown-it --outfile=dist/cjs/index.js",
+    "build-bundle:esm": "esbuild src/index.ts --bundle --platform=node --format=esm --external:vite --external:vue-template-compiler --external:vue-template-es2015-compiler --external:markdown-it --outfile=dist/esm/index.js"
+  },
+  "author": "liangquanqing<834002022@qq.com>",
+  "devDependencies": {
+    "@types/markdown-it": "^12.2.3",
+    "@types/node": "^17.0.21",
+    "esbuild": "^0.14.27",
+    "vite": "^2.9.0"
+  },
+  "dependencies": {
+    "markdown-it": "^12.3.2",
+    "vue-template-compiler": "^2.6.14"
+  },
+  "license": "MIT"
+}
