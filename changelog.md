@@ -1,3 +1,10 @@
+# 2.0.1 (2022-05-15)
+
+### Fix
+
+* Set markdown-it external.
+
+
 # 2.0.0 (2022-05-15)
 
 ### Features

@@ -7,8 +7,8 @@
   "scripts": {
     "build": "rm -rf dist && npm run build-bundle",
     "build-bundle": "npm run build-bundle:cjs && npm run build-bundle:esm",
-    "build-bundle:cjs": "esbuild src/index.ts --bundle --platform=node --format=cjs --external:vite --external:vue-template-compiler --external:vue-template-es2015-compiler --outfile=dist/cjs/index.js",
-    "build-bundle:esm": "esbuild src/index.ts --bundle --platform=node --format=esm --external:vite --external:vue-template-compiler --external:vue-template-es2015-compiler --outfile=dist/esm/index.js"
+    "build-bundle:cjs": "esbuild src/index.ts --bundle --platform=node --format=cjs --external:vite --external:markdown-it --external:vue-template-compiler --external:vue-template-es2015-compiler --outfile=dist/cjs/index.js",
+    "build-bundle:esm": "esbuild src/index.ts --bundle --platform=node --format=esm --external:vite --external:markdown-it --external:vue-template-compiler --external:vue-template-es2015-compiler --outfile=dist/esm/index.js"
   },
   "author": "liangquanqing<834002022@qq.com>",
   "devDependencies": {

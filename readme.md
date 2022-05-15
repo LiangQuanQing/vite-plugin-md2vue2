@@ -10,7 +10,7 @@
 ## Install
 
 ```bash
-yarn add vite-plugin-md2vue2 vue-template-compiler vue-template-es2015-compiler
+yarn add vite-plugin-md2vue2 vue-template-compiler vue-template-es2015-compiler markdown-it
 ```
 
 ```js
