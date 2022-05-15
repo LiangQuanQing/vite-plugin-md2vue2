@@ -25,6 +25,6 @@ export default class contentManager {
       contentArr.push(`export default ${this.defaultExport}`)
     }
 
-    return contentArr.join("\n")
+    return contentArr.join('\n')
   }
 }
