@@ -45,6 +45,20 @@ export default defineConfig({
 })
 ```
 
+### `markdownItOptions`
+
+Type: `Object`<br>
+
+Default: `{ markdownItOptions: { html: true } }`
+
+
+### `markdownItPlugins`
+
+Type: `Array`<br>
+
+Default: `{ markdownItPlugins: [] }`
+
+
 ## Usage in Vue
 
 ```html
