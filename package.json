@@ -1,9 +1,10 @@
 {
   "name": "vite-plugin-md2vue2",
   "version": "2.0.1",
-  "description": "A vite plugin for converting markdown files into vue2 render functions.",
+  "description": "Vite plugin for converting markdown files into vue2 render functions.",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
+  "keywords": ["vite", "vite plugin", "markdown", "vue2", "vue2 render-function"],
   "scripts": {
     "build": "rm -rf dist && npm run build-bundle",
     "build-bundle": "npm run build-bundle:cjs && npm run build-bundle:esm",
@@ -11,6 +12,21 @@
     "build-bundle:esm": "esbuild src/index.ts --bundle --platform=node --format=esm --external:vite --external:markdown-it --external:vue-template-compiler --external:vue-template-es2015-compiler --outfile=dist/esm/index.js"
   },
   "author": "liangquanqing<834002022@qq.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LiangQuanQing/vite-plugin-md2vue2"
+  },
+  "files": ["dist"],
+  "bugs": {
+    "url": "https://github.com/LiangQuanQing/vite-plugin-md2vue2/issues"
+  },
+  "homepage": "https://github.com/LiangQuanQing/vite-plugin-md2vue2/blob/main/readme.md",
+  "peerDependencies": {
+    "markdown-it": "^12.3.2",
+    "vite": "^2.9.0",
+    "vue-template-compiler": "^2.6.14",
+    "vue-template-es2015-compiler": "^1.9.1"
+  },
   "devDependencies": {
     "@types/markdown-it": "^12.2.3",
     "@types/node": "^17.0.21",
