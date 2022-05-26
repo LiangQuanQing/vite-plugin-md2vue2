@@ -1,6 +1,8 @@
-import MarkdownIt, { Options as MarkdownItOptions } from 'markdown-it'
+import MarkdownIt from 'markdown-it'
+import type MarkdownItType from 'markdown-it'
+import type { Options as MarkdownItOptions } from 'markdown-it'
 
-export type MarkdownPlugin<T = any> = MarkdownIt.PluginSimple | MarkdownIt.PluginWithOptions<T> | MarkdownIt.PluginWithParams
+export type MarkdownPlugin<T = any> = MarkdownItType.PluginSimple | MarkdownItType.PluginWithOptions<T> | MarkdownItType.PluginWithParams
 
 export interface MarkdownCompileResult {
   vueTemplate: string

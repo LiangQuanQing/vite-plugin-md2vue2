@@ -1,3 +1,15 @@
+# 2.0.3 (2022-05-26)
+
+### Fix
+
+* Fixed the bug that when the md file was changed, only one hot update was introduced for multiple identical md files.
+
+### Features
+
+* Use tsup to build.
+* Generate *.d.ts type files.
+
+
 # 2.0.2 (2022-05-15)
 
 ### Fix

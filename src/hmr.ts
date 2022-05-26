@@ -23,7 +23,10 @@ export const hotReloadCode = `
   }
 
   __MD_VUE_HMR_RUNTIME__.createRecord = function (id, vm) {
-    map[id] = vm;
+    if (!map[id]) {
+      map[id] = [];
+    }
+    vm && map[id].push(vm);
   }
 
   __MD_VUE_HMR_RUNTIME__.isRecorded = function (id) {
@@ -31,12 +34,14 @@ export const hotReloadCode = `
   }
 
   __MD_VUE_HMR_RUNTIME__.rerender = tryWrap(function (id, options) {
-    const instance = map[id];
-    if (instance) {
-      instance._staticTrees = [];
-      instance.$options.render = options.render;
-      instance.$options.staticRenderFns = options.staticRenderFns;
-      instance.$forceUpdate();
+    const instances = map[id];
+    if (instances && instances.length) {
+      instances.forEach(instance => {
+        instance._staticTrees = [];
+        instance.$options.render = options.render;
+        instance.$options.staticRenderFns = options.staticRenderFns;
+        instance.$forceUpdate();
+      })
     }
   })
 
