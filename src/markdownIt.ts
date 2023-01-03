@@ -1,6 +1,7 @@
 import MarkdownIt from 'markdown-it'
 import type MarkdownItType from 'markdown-it'
 import type { Options as MarkdownItOptions } from 'markdown-it'
+import type { Alias } from './index'
 import path from 'path'
 import get from 'lodash.get'
 
@@ -59,7 +60,8 @@ function _handleChangeTemplateVariable(
 
 function _handleConfig(
   code: string,
-  id: string
+  id: string,
+  alias: Alias
 ): { imports: Imports; datas: Datas; components: string[] } {
   let configText = ''
   let obj: any = {}
@@ -70,28 +72,48 @@ function _handleConfig(
   try {
     obj = JSON.parse(configText)
   } catch (error) {
-    // nothing to do
+    console.warn('There is a problem with the format of the json data you configured.')
+    console.warn(error)
   }
   const componentsConfig =
     typeof obj.components === 'object' && obj.components !== null
       ? obj.components
       : {}
-  const { imports, components } = _handleImports(componentsConfig, id)
+  const { imports, components } = _handleImports(componentsConfig, id, alias)
   const datas: Datas = typeof obj.data === 'object' && obj.data !== null ? obj.data : {}
   return { imports, datas, components }
 }
 
 function _handleImports(
   componentsConfig: { [name: string]: string },
-  id: string
+  id: string,
+  alias: Alias
 ): {
   imports: Imports
   components: string[]
 } {
   const imports: Imports = []
   const components: string[] = []
-  for (const [name, url] of Object.entries(componentsConfig)) {
-    imports.push({ name, path: path.resolve(path.dirname(id), url) })
+  for (let [name, url] of Object.entries(componentsConfig)) {
+    let complete = false
+    if (url[0] === '/') {
+      url = path.join(process.cwd(), url)
+      complete = true
+    } else {
+      for (const [aliasKey, aliasPath] of Object.entries(alias)) {
+        const reg = new RegExp(`^${aliasKey}/`)
+        if (reg.test(url)) {
+          url = path.resolve(aliasPath, url.replace(reg, ''))
+          complete = true
+          break
+        }
+      }
+    }
+    if (!complete) {
+      imports.push({ name, path: path.resolve(path.dirname(id), url) })
+    } else {
+      imports.push({ name, path: url })
+    }
     components.push(name)
   }
   return { imports, components }
@@ -100,11 +122,12 @@ function _handleImports(
 export function createMarkdownToVueRenderer(
   options: MarkdownItOptions,
   plugins: MarkdownPlugin[],
-  id: string
+  id: string,
+  alias: Alias
 ) {
   const renderer = getMarkdownRender(options, plugins)
   return (code: string): MarkdownCompileResult => {
-    const { imports, components, datas } = _handleConfig(code, id)
+    const { imports, components, datas } = _handleConfig(code, id, alias)
     const resultCode = _handleChangeTemplateVariable(
       code,
       datas,

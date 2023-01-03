@@ -1,6 +1,7 @@
 import { createMarkdownToVueRenderer, Imports, MarkdownPlugin } from "../markdownIt"
 import { hotRelaodImportCode } from "../hmr"
 import { Options as MarkdownItOptions } from 'markdown-it'
+import { Alias } from "../index"
 import ContentManager from "./contentManager"
 import toFunction from "./toFunction"
 import transpile from 'vue-template-es2015-compiler'
@@ -11,9 +12,10 @@ export default function (params: {
   id: string;
   markdownItOptions: MarkdownItOptions;
   markdownItPlugins: MarkdownPlugin[];
+  alias: Alias
 }): string {
-  const { code, id, markdownItOptions, markdownItPlugins } = params
-  const renderer = createMarkdownToVueRenderer(markdownItOptions, markdownItPlugins, id)
+  const { code, id, markdownItOptions, markdownItPlugins, alias } = params
+  const renderer = createMarkdownToVueRenderer(markdownItOptions, markdownItPlugins, id, alias)
   const contentManager = new ContentManager()
   const isProduction = process.env.NODE_ENV === 'production'
   const { vueTemplate, imports, components } = renderer(code)
