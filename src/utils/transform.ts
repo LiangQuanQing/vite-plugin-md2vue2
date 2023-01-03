@@ -32,7 +32,7 @@ function _insertHmrCode(contentManager: ContentManager, id: string, isProduction
   if (!isProduction) {
     contentManager.addContext(hotRelaodImportCode)
     contentManager.addContext(`import.meta.hot.accept((update) => {
-      __MD_VUE_HMR_RUNTIME__.rerender("${id}", update);
+      __MD_VUE2_HMR_RUNTIME__.rerender("${id}", update);
     });`)
   }
 }
@@ -50,7 +50,7 @@ function _insertCompileCode(contentManager: ContentManager, vueTemplate: string,
       [
         `var staticRenderFns = [${staticRenderFns.map(toFunction)}];`,
         !isProduction ? `var render = ${toFunction(`
-          !__MD_VUE_HMR_RUNTIME__.createRecord("${id}") && __MD_VUE_HMR_RUNTIME__.createRecord("${id}", this);
+          !__MD_VUE2_HMR_RUNTIME__.createRecord("${id}") && __MD_VUE2_HMR_RUNTIME__.createRecord("${id}", this);
           ${render}
         `)};` : `var render = ${toFunction(render)}`,
         !isProduction ? `render._withStripped = true;` : ''
