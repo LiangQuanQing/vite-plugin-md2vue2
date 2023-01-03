@@ -1,8 +1,8 @@
 import { Plugin } from 'vite'
 import { hotReloadFileId, hotReloadCode } from './hmr'
-import transformCode from './utils/transform'
 import { Options as MarkdownItOptions } from 'markdown-it'
 import { MarkdownPlugin } from './markdownIt'
+import transformCode from './utils/transform'
 
 export interface PluginOptions {
   markdownItOptions?: MarkdownItOptions

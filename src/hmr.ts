@@ -1,40 +1,38 @@
 export const hotReloadFileId = '\0/vite/mdVueHotReload'
 
 export const hotRelaodImportCode = `
-  import __MD_VUE_HMR_RUNTIME__ from ${JSON.stringify(hotReloadFileId)};
+  import __MD_VUE2_HMR_RUNTIME__ from ${JSON.stringify(hotReloadFileId)};
   import Vue from "vue";
-  __MD_VUE_HMR_RUNTIME__.install(Vue);
+  __MD_VUE2_HMR_RUNTIME__.install(Vue);
 `
 
 export const hotReloadCode = `
-  var Vue;
-  var version;
-  var map = Object.create(null);
-  var installed = false;
-  var __MD_VUE_HMR_RUNTIME__ = Object.create(null);
+  var $MD_VUE2_MAP = Object.create(null);
+  var $MD_VUE2_INSTALLED = false;
+  var __MD_VUE2_HMR_RUNTIME__ = Object.create(null);
 
   if (typeof window !== 'undefined') {
-    window.__MD_VUE_HMR_RUNTIME__ = __MD_VUE_HMR_RUNTIME__;
+    window.__MD_VUE2_HMR_RUNTIME__ = __MD_VUE2_HMR_RUNTIME__;
   }
 
-  __MD_VUE_HMR_RUNTIME__.install = function (vue, browserify) {
-    if (installed) return;
-    installed = true;
+  __MD_VUE2_HMR_RUNTIME__.install = function (vue, browserify) {
+    if ($MD_VUE2_INSTALLED) return;
+    $MD_VUE2_INSTALLED = true;
   }
 
-  __MD_VUE_HMR_RUNTIME__.createRecord = function (id, vm) {
-    if (!map[id]) {
-      map[id] = [];
+  __MD_VUE2_HMR_RUNTIME__.createRecord = function (id, vm) {
+    if (!$MD_VUE2_MAP[id]) {
+      $MD_VUE2_MAP[id] = [];
     }
-    vm && map[id].push(vm);
+    vm && $MD_VUE2_MAP[id].push(vm);
   }
 
-  __MD_VUE_HMR_RUNTIME__.isRecorded = function (id) {
-    return typeof map[id] !== 'undefined';
+  __MD_VUE2_HMR_RUNTIME__.isRecorded = function (id) {
+    return typeof $MD_VUE2_MAP[id] !== 'undefined';
   }
 
-  __MD_VUE_HMR_RUNTIME__.rerender = tryWrap(function (id, options) {
-    const instances = map[id];
+  __MD_VUE2_HMR_RUNTIME__.rerender = tryWrap(function (id, options) {
+    const instances = $MD_VUE2_MAP[id];
     if (instances && instances.length) {
       instances.forEach(instance => {
         instance._staticTrees = [];
@@ -45,8 +43,8 @@ export const hotReloadCode = `
     }
   })
 
-  __MD_VUE_HMR_RUNTIME__.getInstance = function (id) {
-    return map[id] || null;
+  __MD_VUE2_HMR_RUNTIME__.getInstance = function (id) {
+    return $MD_VUE2_MAP[id] || null;
   }
 
   function tryWrap(fn) {
@@ -62,5 +60,5 @@ export const hotReloadCode = `
     };
   }
 
-  export default __MD_VUE_HMR_RUNTIME__;
+  export default __MD_VUE2_HMR_RUNTIME__;
 `

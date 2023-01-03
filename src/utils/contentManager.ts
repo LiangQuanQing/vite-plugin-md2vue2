@@ -1,4 +1,4 @@
-export default class contentManager {
+export default class ContentManager {
   exports: string[] = []
   defaultExport: string = ''
   contextCode: string = ''
@@ -7,7 +7,7 @@ export default class contentManager {
     this.contextCode += `${contextCode}\n`
   }
 
-  addExporting(exported: string): void {
+  addExport(exported: string): void {
     this.exports.push(exported)
   }
 

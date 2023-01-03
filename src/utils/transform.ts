@@ -1,4 +1,4 @@
-import { createMarkdownToVueRenderer, MarkdownPlugin } from "../markdownIt"
+import { createMarkdownToVueRenderer, Imports, MarkdownPlugin } from "../markdownIt"
 import { hotRelaodImportCode } from "../hmr"
 import { Options as MarkdownItOptions } from 'markdown-it'
 import ContentManager from "./contentManager"
@@ -13,12 +13,36 @@ export default function (params: {
   markdownItPlugins: MarkdownPlugin[];
 }): string {
   const { code, id, markdownItOptions, markdownItPlugins } = params
-  const transformMarkdownToVue = createMarkdownToVueRenderer(markdownItOptions, markdownItPlugins)
+  const renderer = createMarkdownToVueRenderer(markdownItOptions, markdownItPlugins, id)
   const contentManager = new ContentManager()
-  const { vueTemplate } = transformMarkdownToVue(code)
-  const { render, staticRenderFns } = compiler.compile(vueTemplate)
   const isProduction = process.env.NODE_ENV === 'production'
+  const { vueTemplate, imports, components } = renderer(code)
 
+  _insertComponentsImportsCode(contentManager, imports)
+  _insertHmrCode(contentManager, id, isProduction)
+  _insertCompileCode(contentManager, vueTemplate, isProduction, id)
+  _insertExportCode(contentManager, components)
+
+  return contentManager.export()
+}
+
+function _insertHmrCode(contentManager: ContentManager, id: string, isProduction: boolean) {
+  if (!isProduction) {
+    contentManager.addContext(hotRelaodImportCode)
+    contentManager.addContext(`import.meta.hot.accept((update) => {
+      __MD_VUE_HMR_RUNTIME__.rerender("${id}", update);
+    });`)
+  }
+}
+
+function _insertComponentsImportsCode(contentManager: ContentManager, imports: Imports) {
+  for (const { name, path } of imports) {
+    contentManager.addContext(`import ${name} from "${path}";`)
+  }
+}
+
+function _insertCompileCode(contentManager: ContentManager, vueTemplate: string, isProduction: boolean, id: string) {
+  const { render, staticRenderFns } = compiler.compile(vueTemplate)
   const compiledVueCode =
     transpile(
       [
@@ -31,17 +55,11 @@ export default function (params: {
       ].join('\n'),
       {}
     )
-
-  !isProduction && contentManager.addContext(hotRelaodImportCode)
   contentManager.addContext(compiledVueCode)
-  !isProduction && contentManager.addContext(`import.meta.hot.accept((update) => {
-    __MD_VUE_HMR_RUNTIME__.rerender("${id}", update);
-  });`)
+}
 
-  contentManager.addExporting('render')
-  contentManager.addExporting('staticRenderFns')
-
-  contentManager.addDefaultExport(`{ render, staticRenderFns }`)
-
-  return contentManager.export()
+function _insertExportCode(contentManager: ContentManager, components: string[]) {
+  contentManager.addExport('render')
+  contentManager.addExport('staticRenderFns')
+  contentManager.addDefaultExport(`{ render, staticRenderFns, components: {${components.join(',')}} }`)
 }
