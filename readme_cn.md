@@ -1,3 +1,6 @@
+[中文](./readme_cn.md)
+[English](./readme.md)
+
 ## 介绍
 
 - 🌟 [`vite-plugin-md2vue2`](https://www.npmjs.com/package/vite-plugin-md2vue2) 是一个将markdown文件转换成vue2 render函数的vite插件
@@ -58,7 +61,6 @@ export default defineConfig({
 ## 将markdown文件当作vue组件来使用
 
 ```html
-<!-- Convert markdown files into vue2 render functions -->
 <template>
   <Test />
 </template>
