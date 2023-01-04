@@ -1,17 +1,31 @@
-import { Plugin } from 'vite'
+import { PluginOption } from 'vite'
 import { hotReloadFileId, hotReloadCode } from './hmr'
-import transformCode from './utils/transform'
 import { Options as MarkdownItOptions } from 'markdown-it'
 import { MarkdownPlugin } from './markdownIt'
+import transformCode from './utils/transform'
 
-export interface PluginOptions {
+export interface Options {
   markdownItOptions?: MarkdownItOptions
   markdownItPlugins?: MarkdownPlugin[]
 }
 
-export default function (options: PluginOptions = {}): Plugin {
+export interface Alias {
+  [alias: string]: string
+}
+
+export default function (options?: Options): PluginOption {
+  const alias: Alias = {}
+
   return {
     name: 'vite-plugin-md2vue2',
+
+    configResolved(resolvedConfig) {
+      const aliasConfig = resolvedConfig.resolve.alias
+      const { find, replacement } = aliasConfig[0]
+      if (typeof find === 'string') {
+        alias[find as string] = replacement
+      }
+    },
 
     resolveId(id) {
       if (id === hotReloadFileId) return id
@@ -27,8 +41,9 @@ export default function (options: PluginOptions = {}): Plugin {
           code: transformCode({
             code,
             id,
-            markdownItOptions: options.markdownItOptions || {},
-            markdownItPlugins: options.markdownItPlugins || []
+            markdownItOptions: (options && options.markdownItOptions) || {},
+            markdownItPlugins: (options && options.markdownItPlugins) || [],
+            alias
           })
         }
       return { code }

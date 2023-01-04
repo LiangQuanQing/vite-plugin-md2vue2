@@ -1,19 +1,19 @@
-[中文](https://github.com/LiangQuanQing/vite-plugin-md2vue2/blob/main/readme_cn.md)
-[English](https://github.com/LiangQuanQing/vite-plugin-md2vue2/blob/main/readme.md)
+[中文](./readme_cn.md)
+[English](./readme.md)
 
-## Description
+## 介绍
 
-- 🌟 [`vite-plugin-md2vue2`](https://www.npmjs.com/package/vite-plugin-md2vue2) is a vite plugin for transforming markdown files to vue2 render functions.
-- ✅ Support hmr in development environment.
-- ✅ Support custom markdown-it configurations.
-- ✅ You can use vue-components in markdown files.
-- ✅ You can also use markdown files as vue-components in vue files.
-- ❗ If you use `vite-plugin-md2vue2@1.0.0` and use markdown files as vue-components in vue files, you must install [vite-plugin-vue2](https://github.com/underfin/vite-plugin-vue2) before using `vite-plugin-md2vue2`.
-- ❗ Only vue2 is supported. 
+- 🌟 [`vite-plugin-md2vue2`](https://www.npmjs.com/package/vite-plugin-md2vue2) 是一个将markdown文件转换成vue2 render函数的vite插件
+- ✅ 开发环境下支持热更新
+- ✅ 支持设置 `markdown-it` 配置
+- ✅ 可以将markdown文件当作vue组件来使用
+- ✅ 可以在markdown文件中使用vue组件（支持全局组件和局部注册组件使用）
+- ❗ 如果你使用的是 `vite-plugin-md2vue2@1.0.0` 并且将markdown文件当作vue组件来使用，你必须下载 [vite-plugin-vue2](https://github.com/underfin/vite-plugin-vue2) 
+- ❗ 只支持vue2
 
-## Install
+## 下载方式
 
-### The recommended npm-package version:
+### 推荐的包版本
   - `vue@2.7.14`
   - `vue-template-compiler@2.7.14`
   - `vue-template-es2015-compiler@1.9.1`
@@ -23,7 +23,7 @@
 yarn add vite-plugin-md2vue2 vue-template-compiler vue-template-es2015-compiler markdown-it@^12.3.2
 ```
 
-### Example
+### 示例
 ```js
 import { createVuePlugin } from 'vite-plugin-vue2'
 import { defineConfig, PluginOption } from 'vite'
@@ -56,22 +56,20 @@ export default defineConfig({
 })
 ```
 
-### Common startup errors
-
+### 常见的启动报错
 - Vue packages version mismatch
 
 ```bash
-example:
+错误:
 - Vue packages version mismatch
 - vue@2.6.5
 - vue-template-compiler@2.7.14
 
-solution:
-- install the same version of vue and vue-template-compiler
+解决方法:
+- 下载相同版本的 vue 和 vue-template-compiler
 ```
 
-
-## Plugin Options
+## 插件参数
 ### `markdownItOptions`
   - Type: `Object`
   - Default: `{ html: true }`
@@ -80,7 +78,7 @@ solution:
   - Default: `[]`
 
 
-## Import Markdown as Vue components
+## 将markdown文件当作vue组件来使用
 
 ```html
 <template>
@@ -97,9 +95,9 @@ export default {
 </script>
 ```
 
-## Use Vue Components inside your Markdown (global component)
+## 在markdown文件中使用vue组件-全局组件
 
-```md
+```m
 ### I can use vue component in markdown
 
 <CustomGlobalComponent data="hello world" />
@@ -107,7 +105,7 @@ export default {
 perfect!!!
 ```
 
-## Use Vue Components inside your Markdown (local registration)
+## 在markdown文件中使用vue组件-局部注册组件
 
 ```md
 ---
@@ -118,12 +116,12 @@ perfect!!!
 }
 ---
 
-You must set the component or data configuration at the very top of the md file.
+你要像这样，在md文件顶部设置这些配置
 
 <Test />
 ```
 
-## Use Vue Components inside your Markdown (support vite-config "resolve.alias")
+## 在markdown文件中使用vue组件-支持vite的"resolve.alias"配置
 
 ```md
 ---
@@ -134,12 +132,12 @@ You must set the component or data configuration at the very top of the md file.
 }
 ---
 
-You must set the component or data configuration at the very top of the md file.
+你要像这样，在md文件顶部设置这些配置
 
 <Test />
 ```
 
-## Template variable conversion
+## 支持模版变量替换
 
 ```md
 ---
@@ -166,7 +164,7 @@ The count is ${count}  // The count is 3
 Value: ${info.value}   // Value: 6
 ```
 
-## Usage in Vue-Router
+## 在Vue-Router中使用
 
 ```js
 import VueRouter from 'vue-router'
