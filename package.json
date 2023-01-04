@@ -2,7 +2,7 @@
   "name": "vite-plugin-md2vue2",
   "version": "2.0.3",
   "author": "liangquanqing<834002022@qq.com>",
-  "description": "Vite plugin for converting markdown files into vue2 render functions.",
+  "description": "Vite plugin for transforming markdown files to vue2 render functions.",
   "files": [
     "dist"
   ],
