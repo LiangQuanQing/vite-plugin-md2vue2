@@ -13,10 +13,17 @@
 
 ## 下载方式
 
+### 推荐的包版本
+  - `vue@2.7.14`
+  - `vue-template-compiler@2.7.14`
+  - `vue-template-es2015-compiler@1.9.1`
+  - `markdown-it@12.3.2`
+
 ```bash
-yarn add vite-plugin-md2vue2 vue-template-compiler@^2.6.14 vue-template-es2015-compiler@^1.9.1 markdown-it@^12.3.2
+yarn add vite-plugin-md2vue2 vue-template-compiler vue-template-es2015-compiler markdown-it@^12.3.2
 ```
 
+### 示例
 ```js
 import { createVuePlugin } from 'vite-plugin-vue2'
 import { defineConfig, PluginOption } from 'vite'
@@ -47,6 +54,19 @@ export default defineConfig({
     createVuePlugin()
   ]
 })
+```
+
+### 常见的启动报错
+- Vue packages version mismatch
+
+```bash
+错误:
+- Vue packages version mismatch
+- vue@2.6.5
+- vue-template-compiler@2.7.14
+
+解决方法:
+- 下载相同版本的 vue 和 vue-template-compiler
 ```
 
 ## 插件参数

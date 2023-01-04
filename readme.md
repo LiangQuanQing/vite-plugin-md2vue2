@@ -13,10 +13,17 @@
 
 ## Install
 
+### The recommended npm-package version:
+  - `vue@2.7.14`
+  - `vue-template-compiler@2.7.14`
+  - `vue-template-es2015-compiler@1.9.1`
+  - `markdown-it@12.3.2`
+
 ```bash
-yarn add vite-plugin-md2vue2 vue-template-compiler@^2.6.14 vue-template-es2015-compiler@^1.9.1 markdown-it@^12.3.2
+yarn add vite-plugin-md2vue2 vue-template-compiler vue-template-es2015-compiler markdown-it@^12.3.2
 ```
 
+### Example
 ```js
 import { createVuePlugin } from 'vite-plugin-vue2'
 import { defineConfig, PluginOption } from 'vite'
@@ -48,6 +55,21 @@ export default defineConfig({
   ]
 })
 ```
+
+### Common startup errors
+
+- Vue packages version mismatch
+
+```bash
+example:
+- Vue packages version mismatch
+- vue@2.6.5
+- vue-template-compiler@2.7.14
+
+solution:
+- install the same version of vue and vue-template-compiler
+```
+
 
 ## Plugin Options
 ### `markdownItOptions`
