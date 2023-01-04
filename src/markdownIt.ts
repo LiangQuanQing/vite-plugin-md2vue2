@@ -69,11 +69,13 @@ function _handleConfig(
     const execResult = RE.exec(code)
     configText = execResult?.[1] || ''
   }
-  try {
-    obj = JSON.parse(configText)
-  } catch (error) {
-    console.warn('There is a problem with the format of the json data you configured.')
-    console.warn(error)
+  if (configText) {
+    try {
+      obj = JSON.parse(configText)
+    } catch (error) {
+      console.warn('There is a problem with the format of the json data you configured.')
+      console.warn(error)
+    }
   }
   const componentsConfig =
     typeof obj.components === 'object' && obj.components !== null
