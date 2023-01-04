@@ -1,5 +1,5 @@
-[中文](./readme_cn.md)
-[English](./readme.md)
+[中文](https://github.com/LiangQuanQing/vite-plugin-md2vue2/blob/main/readme_cn.md)
+[English](https://github.com/LiangQuanQing/vite-plugin-md2vue2/blob/main/readme.md)
 
 ## Description
 
