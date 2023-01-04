@@ -1,3 +1,11 @@
+# 2.0.4（2023-01-04）
+
+### Features
+
+* Support for partial registration of vue components in the markdown file.
+* Supports conversion template variables.
+* Update the readme file and add the Chinese documentation.
+
 # 2.0.3 (2022-05-26)
 
 ### Fix
