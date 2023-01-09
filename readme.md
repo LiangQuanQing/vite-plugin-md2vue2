@@ -23,7 +23,7 @@
 yarn add vite-plugin-md2vue2 vue-template-compiler vue-template-es2015-compiler markdown-it@^12.3.2
 ```
 
-### Example
+## Example
 ```js
 import { createVuePlugin } from 'vite-plugin-vue2'
 import { defineConfig, PluginOption } from 'vite'
@@ -56,7 +56,7 @@ export default defineConfig({
 })
 ```
 
-### Common startup errors
+## Common startup errors
 
 - Vue packages version mismatch
 

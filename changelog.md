@@ -1,3 +1,9 @@
+# 2.0.5（2023-01-09）
+
+### Fix
+
+* Fixed a bug with profiling configuration.
+
 # 2.0.4（2023-01-04）
 
 ### Features
