@@ -35,12 +35,31 @@ __MD_VUE2_HMR_RUNTIME__.isRecorded = function (id) {
   return typeof $MD_VUE2_MAP[id] !== 'undefined';
 }
 
-__MD_VUE2_HMR_RUNTIME__.rerender = tryWrap(function (id, options) {
+__MD_VUE2_HMR_RUNTIME__.rerender = _tryWrap(function (id, options) {
   var instances = $MD_VUE2_MAP[id];
+  if (!options) {
+    instances.slice().forEach(function (instance) {
+      instance.$forceUpdate();
+    })
+    return;
+  }
   if (instances && instances.length) {
-    instances.forEach(instance => {
+    instances.slice().forEach(instance => {
+      var Ctor = instance.constructor;
+      if (Ctor && Ctor.options) {
+        Ctor.options.render = options.render;
+        Ctor.options.staticRenderFns = options.staticRenderFns;
+        if (Array.isArray(Ctor.options.cached)) {
+          Ctor.options.cached = [];
+        }
+      }
       var globalComponents = $MD_VUE2_VUE ? $MD_VUE2_VUE.options.components : {};
-      instance._staticTrees = [];
+      if (instance._staticTrees) {
+        instance._staticTrees = [];
+      }
+      if (Array.isArray(instance.$options && instance.$options.cached)) {
+        instance.$options.cached = [];
+      }
       instance.$options.components = { ...globalComponents, ...options.default.components }
       instance.$options.render = options.render;
       instance.$options.staticRenderFns = options.staticRenderFns;
@@ -49,11 +68,11 @@ __MD_VUE2_HMR_RUNTIME__.rerender = tryWrap(function (id, options) {
   }
 })
 
-__MD_VUE2_HMR_RUNTIME__.getInstance = function (id) {
-  return $MD_VUE2_MAP[id] || null;
+__MD_VUE2_HMR_RUNTIME__.getInstances = function (id) {
+  return $MD_VUE2_MAP[id] || [];
 }
 
-function tryWrap(fn) {
+function _tryWrap (fn) {
   return function () {
     try {
       fn.apply(null, arguments);
