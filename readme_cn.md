@@ -1,7 +1,7 @@
 [中文](./readme_cn.md)
 [English](./readme.md)
 
-## 介绍
+# vite-plugin-md2vue2
 
 - 🌟 [`vite-plugin-md2vue2`](https://www.npmjs.com/package/vite-plugin-md2vue2) 是一个将markdown文件转换成vue2 render函数的vite插件
 - ✅ 开发环境下支持热更新
@@ -13,14 +13,16 @@
 
 ## 下载方式
 
-### 推荐的包版本
-  - `vue@2.7.14`
-  - `vue-template-compiler@2.7.14`
-  - `vue-template-es2015-compiler@1.9.1`
-  - `markdown-it@12.3.2`
+```bash
+yarn add vite-plugin-md2vue2
+```
+
+### Warning
+
+如果你使用的vue版本比 vue@2.7.0 更小，并且本地没有安装 @vue/compiler-sfc@2.x.x，**那么你必须安装和当前本地项目中vue版本一样的 vue-template-compiler**，否则会报错
 
 ```bash
-yarn add vite-plugin-md2vue2 vue-template-compiler vue-template-es2015-compiler markdown-it@^12.3.2
+yarn add vue-template-compiler # 此包的版本必须和vue版本号一致，否则有可能会报错
 ```
 
 ## 示例
@@ -54,19 +56,6 @@ export default defineConfig({
     createVuePlugin()
   ]
 })
-```
-
-## 常见的启动报错
-- Vue packages version mismatch
-
-```bash
-错误:
-- Vue packages version mismatch
-- vue@2.6.5
-- vue-template-compiler@2.7.14
-
-解决方法:
-- 下载相同版本的 vue 和 vue-template-compiler
 ```
 
 ## 插件参数
@@ -158,7 +147,7 @@ perfect!!!
 }
 ---
 
-You must set the component or data configuration at the very top of the md file.
+你要像这样，在md文件顶部设置这些配置
 
 The count is ${count}  // The count is 3
 Value: ${info.value}   // Value: 6

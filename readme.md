@@ -1,7 +1,7 @@
 [中文](https://github.com/LiangQuanQing/vite-plugin-md2vue2/blob/main/readme_cn.md)
 [English](https://github.com/LiangQuanQing/vite-plugin-md2vue2/blob/main/readme.md)
 
-## Description
+# vite-plugin-md2vue2
 
 - 🌟 [`vite-plugin-md2vue2`](https://www.npmjs.com/package/vite-plugin-md2vue2) is a vite plugin for transforming markdown files to vue2 render functions.
 - ✅ Support hmr in development environment.
@@ -13,14 +13,16 @@
 
 ## Install
 
-### The recommended npm-package version:
-  - `vue@2.7.14`
-  - `vue-template-compiler@2.7.14`
-  - `vue-template-es2015-compiler@1.9.1`
-  - `markdown-it@12.3.2`
+```bash
+yarn add vite-plugin-md2vue2
+```
+
+### Warning
+
+If you are using an earlier version of vue@2.7.0 and do not have @vue/compiler-sfc@2.x.x installed, **you must install vue-template-compiler, which is the same version as the current vue.**
 
 ```bash
-yarn add vite-plugin-md2vue2 vue-template-compiler vue-template-es2015-compiler markdown-it@^12.3.2
+yarn add vue-template-compiler # version of current vue
 ```
 
 ## Example
@@ -55,21 +57,6 @@ export default defineConfig({
   ]
 })
 ```
-
-## Common startup errors
-
-- Vue packages version mismatch
-
-```bash
-example:
-- Vue packages version mismatch
-- vue@2.6.5
-- vue-template-compiler@2.7.14
-
-solution:
-- install the same version of vue and vue-template-compiler
-```
-
 
 ## Plugin Options
 ### `markdownItOptions`
