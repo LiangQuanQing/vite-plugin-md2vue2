@@ -5,15 +5,14 @@ import { Alias } from "../index"
 import ContentManager from "./contentManager"
 import toFunction from "./toFunction"
 import transpile from 'vue-template-es2015-compiler'
-import * as compiler from 'vue-template-compiler'
 
-export default function (params: {
+export default async function (params: {
   code: string;
   id: string;
   markdownItOptions: MarkdownItOptions;
   markdownItPlugins: MarkdownPlugin[];
   alias: Alias
-}): string {
+}): Promise<string> {
   const { code, id, markdownItOptions, markdownItPlugins, alias } = params
   const renderer = createMarkdownToVueRenderer(markdownItOptions, markdownItPlugins, id, alias)
   const contentManager = new ContentManager()
@@ -22,7 +21,7 @@ export default function (params: {
 
   _insertComponentsImportsCode(contentManager, imports)
   _insertHmrCode(contentManager, id, isProduction)
-  _insertCompileCode(contentManager, vueTemplate, isProduction, id)
+  await _insertCompileCode(contentManager, vueTemplate, isProduction, id)
   _insertExportCode(contentManager, components)
 
   return contentManager.export()
@@ -43,20 +42,41 @@ function _insertComponentsImportsCode(contentManager: ContentManager, imports: I
   }
 }
 
-function _insertCompileCode(contentManager: ContentManager, vueTemplate: string, isProduction: boolean, id: string) {
-  const { render, staticRenderFns } = compiler.compile(vueTemplate)
-  const compiledVueCode =
-    transpile(
-      [
-        `var staticRenderFns = [${staticRenderFns.map(toFunction)}];`,
-        !isProduction ? `var render = ${toFunction(`
-          !__MD_VUE2_HMR_RUNTIME__.createRecord("${id}") && __MD_VUE2_HMR_RUNTIME__.createRecord("${id}", this);
-          ${render}
-        `)};` : `var render = ${toFunction(render)}`,
-        !isProduction ? `render._withStripped = true;` : ''
-      ].join('\n'),
-      {}
-    )
+async function _insertCompileCode(contentManager: ContentManager, vueTemplate: string, isProduction: boolean, id: string) {
+  let renderCode = ''
+  let staticRenderCode = ''
+  await import('vue-template-compiler')
+      .then((res) => {
+        const { render, staticRenderFns } = res.default.compile(vueTemplate)
+        renderCode = render
+        staticRenderCode = `var staticRenderFns = [${staticRenderFns.map(toFunction)}];`
+      })
+      .catch(async() => (await import('@vue/compiler-sfc')))
+      .then((res) => {
+        if (res?.default) {
+          const source = vueTemplate.match(/<template>([\s\S]*)<\/template>/)?.[1] || ''
+          const { code } = res.default.compileTemplate({ source, filename: id })
+          renderCode = code.match(/var render\s*=\s*function render\s*\(\)\s*\{([^}]*)\}/)?.[1] || ''
+          staticRenderCode = code.match(/var staticRenderFns\s*=\s*\[[\s\S\]]*\]/)?.[0] || `var staticRenderFns = [];`
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+        process.exit(1)
+      })
+  const compiledVueCode = transpile(
+    [
+      staticRenderCode,
+      !isProduction
+        ? `var render = ${toFunction(`
+          __MD_VUE2_HMR_RUNTIME__.createRecord("${id}", this);
+          ${renderCode}
+        `)};`
+        : `var render = ${toFunction(renderCode)}`,
+      !isProduction ? `render._withStripped = true;` : ''
+    ].join('\n'),
+    {}
+  )
   contentManager.addContext(compiledVueCode)
 }
 
