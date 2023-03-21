@@ -52,10 +52,10 @@
     "tsup": "^6.5.0",
     "typescript": "^4.7.2",
     "vite": "^2.9.0",
-    "vue-template-compiler": "^2.6.14",
-    "vue-template-es2015-compiler": "^1.9.1"
+    "vue-template-compiler": "^2.6.14"
   },
   "dependencies": {
-    "markdown-it": "^12.3.2"
+    "markdown-it": "^12.3.2",
+    "vue-template-es2015-compiler": "^1.9.1"
   }
 }
