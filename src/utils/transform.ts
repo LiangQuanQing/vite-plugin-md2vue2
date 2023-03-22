@@ -56,7 +56,7 @@ async function _insertCompileCode(contentManager: ContentManager, vueTemplate: s
         if (res?.default) {
           const source = vueTemplate.match(/<template>([\s\S]*)<\/template>/)?.[1] || ''
           const { code } = res.default.compileTemplate({ source, filename: id })
-          renderCode = code.match(/var render\s*=\s*function render\s*\(\)\s*\{([^}]*)\}/)?.[1] || ''
+          renderCode = code.match(/var render\s*=\s*function render\s*\(\)\s*\{([\s\S\}]*)\}/)?.[1] || ''
           staticRenderCode = code.match(/var staticRenderFns\s*=\s*\[[\s\S\]]*\]/)?.[0] || `var staticRenderFns = [];`
         }
       })
