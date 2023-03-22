@@ -1,3 +1,9 @@
+# 2.0.7（2023-03-22）
+
+### Fix
+
+* Fixed a bug when intercepting render functions.
+
 # 2.0.6（2023-03-22）
 
 ### Perf
