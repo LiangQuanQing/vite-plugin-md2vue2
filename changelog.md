@@ -1,3 +1,10 @@
+# 2.0.6（2023-03-22）
+
+### Perf
+
+* Better support for hmr.
+* Better support for vue@2.7.x .
+
 # 2.0.5（2023-01-09）
 
 ### Fix

@@ -35,17 +35,19 @@ export default function (options?: Options): PluginOption {
       if (id === hotReloadFileId) return hotReloadCode
     },
 
-    transform(code, id) {
-      if (id.endsWith('.md'))
+    async transform(code, id) {
+      if (id.endsWith('.md')) {
+        const resultCode = await transformCode({
+          code,
+          id,
+          markdownItOptions: (options && options.markdownItOptions) || {},
+          markdownItPlugins: (options && options.markdownItPlugins) || [],
+          alias
+        })
         return {
-          code: transformCode({
-            code,
-            id,
-            markdownItOptions: (options && options.markdownItOptions) || {},
-            markdownItPlugins: (options && options.markdownItPlugins) || [],
-            alias
-          })
+          code: resultCode
         }
+      }
       return { code }
     }
   }
