@@ -60,10 +60,7 @@ async function _insertCompileCode(contentManager: ContentManager, vueTemplate: s
           staticRenderCode = code.match(/var staticRenderFns\s*=\s*\[[\s\S\]]*\]/)?.[0] || `var staticRenderFns = [];`
         }
       })
-      .catch((err) => {
-        console.log(err)
-        process.exit(1)
-      })
+      .catch((err) => console.error(err))
   const compiledVueCode = transpile(
     [
       staticRenderCode,
