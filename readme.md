@@ -149,8 +149,13 @@ You must set the component or data configuration at the very top of the md file.
 
 You must set the component or data configuration at the very top of the md file.
 
+// 2.0.4 - 2.0.7
 The count is ${count}  // The count is 3
 Value: ${info.value}   // Value: 6
+
+// >= 2.0.8
+The count is {{ count }}  // The count is 3
+Value: {{ info.value }}   // Value: 6
 ```
 
 ## Usage in Vue-Router

@@ -149,8 +149,13 @@ perfect!!!
 
 你要像这样，在md文件顶部设置这些配置
 
+// 2.0.4 - 2.0.7
 The count is ${count}  // The count is 3
 Value: ${info.value}   // Value: 6
+
+// >= 2.0.8
+The count is {{ count }}  // The count is 3
+Value: {{ info.value }}   // Value: 6
 ```
 
 ## 在Vue-Router中使用
