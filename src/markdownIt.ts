@@ -5,7 +5,7 @@ import type { Alias } from './index'
 import path from 'path'
 import get from 'lodash.get'
 
-const RE = /^\s*---\n([^---]*)\n---/
+const RE = /^\s*---([\s\S]+?)---/
 
 export type MarkdownPlugin<T = any> =
   | MarkdownItType.PluginSimple
