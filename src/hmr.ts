@@ -60,6 +60,9 @@ __MD_VUE2_HMR_RUNTIME__.rerender = _tryWrap(function (id, options) {
       if (Array.isArray(instance.$options && instance.$options.cached)) {
         instance.$options.cached = [];
       }
+      if (typeof options.default.data === 'function') {
+        instance._data = options.default.data()
+      }
       instance.$options.components = { ...globalComponents, ...options.default.components }
       instance.$options.render = options.render;
       instance.$options.staticRenderFns = options.staticRenderFns;

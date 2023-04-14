@@ -80,14 +80,12 @@ async function _insertCompileCode(contentManager: ContentManager, vueTemplate: s
 function _insertExportCode(contentManager: ContentManager, components: string[], data: object) {
   contentManager.addExport('render')
   contentManager.addExport('staticRenderFns')
-  contentManager.addDefaultExport(`
-    {
-      render,
-      staticRenderFns,
-      components: {${components.join(',')}},
-      data() {
-        return ${JSON.stringify(data)}
-      }
-    }`
-  )
+  contentManager.addDefaultExport(`{
+    render,
+    staticRenderFns,
+    components: {${components.join(',')}},
+    data() {
+      return ${JSON.stringify(data)}
+    }
+  }`)
 }
