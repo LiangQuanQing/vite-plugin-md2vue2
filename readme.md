@@ -47,10 +47,12 @@ export default defineConfig({
   plugins: [
     md2Vue2Plugin({
       // https://markdown-it.docschina.org/
+      // optional
       markdownItOptions: {
         linkify: true,
         typographer: true
       },
+      // optional
       markdownItPlugins: [emoji]
     }) as PluginOption,
     createVuePlugin()
