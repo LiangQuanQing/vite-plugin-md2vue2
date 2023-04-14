@@ -28,9 +28,9 @@ yarn add vue-template-compiler # the same version as the vue version in your pro
 ## Special problem
 
 - **global component hmr fails**
-  - Maybe you use `Vue.mixin` after registering global components
+  - Maybe you use `Vue.mixin` after registering global components (When registering packages such as vuex, vue-router, piana, etc., their internal logic may also use `Vue.mixin()`)
   - This may be a bug in Vue2. The above attempt is likely to clear `Vue.options.components`
-  - You should try registering global components after using `Vue.mixin`
+  - You should try registering global components after using `Vue.mixin` or you should put registration of global components at the last priority
 
 
 ## Example
