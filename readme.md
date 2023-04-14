@@ -22,8 +22,16 @@ yarn add vite-plugin-md2vue2
 If you are using an earlier version of vue@2.7.0 and do not have @vue/compiler-sfc@2.x.x installed, **you must install vue-template-compiler, which is the same version as the current vue.**
 
 ```bash
-yarn add vue-template-compiler # version of current vue
+yarn add vue-template-compiler # the same version as the vue version in your project
 ```
+
+## Special problem
+
+- **global component hmr fails**
+  - Maybe you use `Vue.mixin` after registering global components
+  - This may be a bug in Vue2. The above attempt is likely to clear `Vue.options.components`
+  - You should try registering global components after using `Vue.mixin`
+
 
 ## Example
 ```js
