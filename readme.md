@@ -22,8 +22,16 @@ yarn add vite-plugin-md2vue2
 If you are using an earlier version of vue@2.7.0 and do not have @vue/compiler-sfc@2.x.x installed, **you must install vue-template-compiler, which is the same version as the current vue.**
 
 ```bash
-yarn add vue-template-compiler # version of current vue
+yarn add vue-template-compiler # the same version as the vue version in your project
 ```
+
+## Special problem
+
+- **global component hmr fails**
+  - Maybe you use `Vue.mixin` after registering global components (When registering packages such as vuex, vue-router, piana, etc., their internal logic may also use `Vue.mixin()`)
+  - This may be a bug in Vue2. The above attempt is likely to clear `Vue.options.components`
+  - You should try registering global components after using `Vue.mixin` or you should put registration of global components at the last priority
+
 
 ## Example
 ```js
@@ -47,10 +55,12 @@ export default defineConfig({
   plugins: [
     md2Vue2Plugin({
       // https://markdown-it.docschina.org/
+      // optional
       markdownItOptions: {
         linkify: true,
         typographer: true
       },
+      // optional
       markdownItPlugins: [emoji]
     }) as PluginOption,
     createVuePlugin()
@@ -149,8 +159,13 @@ You must set the component or data configuration at the very top of the md file.
 
 You must set the component or data configuration at the very top of the md file.
 
+// 2.0.4 - 2.0.7
 The count is ${count}  // The count is 3
 Value: ${info.value}   // Value: 6
+
+// >= 2.0.8
+The count is {{ count }}  // The count is 3
+Value: {{ info.value }}   // Value: 6
 ```
 
 ## Usage in Vue-Router

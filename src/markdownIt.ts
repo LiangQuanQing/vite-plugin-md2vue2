@@ -3,9 +3,8 @@ import type MarkdownItType from 'markdown-it'
 import type { Options as MarkdownItOptions } from 'markdown-it'
 import type { Alias } from './index'
 import path from 'path'
-import get from 'lodash.get'
 
-const RE = /^\s*---\n([^---]*)\n---/
+const RE = /^\s*---([\s\S]+?)---/
 
 export type MarkdownPlugin<T = any> =
   | MarkdownItType.PluginSimple
@@ -16,6 +15,7 @@ export interface MarkdownCompileResult {
   vueTemplate: string
   imports: Imports
   components: string[]
+  datas: object
 }
 
 export type Imports = Array<{ name: string; path: string }>
@@ -34,28 +34,6 @@ export function getMarkdownRender(
     renderer.use(plugin)
   }
   return renderer
-}
-
-function _handleChangeTemplateVariable(
-  code: string,
-  datas: Datas,
-  values: Datas,
-  paths: string[]
-): string {
-  let resultCode = code
-  for (const [key, value] of Object.entries(values)) {
-    paths.push(key)
-    if (typeof value === 'object' && value !== null) {
-      resultCode = _handleChangeTemplateVariable(resultCode, datas, value, [
-        ...paths
-      ])
-    } else {
-      const reg = new RegExp(`\\$\\{\\s*${paths.join('\\.')}\\s*\\}`, 'gm')
-      resultCode = resultCode.replace(reg, get(datas, paths.join('.'), ''))
-    }
-    paths.pop()
-  }
-  return resultCode
 }
 
 function _handleConfig(
@@ -130,18 +108,14 @@ export function createMarkdownToVueRenderer(
   const renderer = getMarkdownRender(options, plugins)
   return (code: string): MarkdownCompileResult => {
     const { imports, components, datas } = _handleConfig(code, id, alias)
-    const resultCode = _handleChangeTemplateVariable(
-      code,
-      datas,
-      datas,
-      []
-    ).replace(RE, '')
+    const resultCode = code.replace(RE, '')
     const html = renderer.render(resultCode)
     const vueTemplate = `<template><div>${html}</div></template>`
     return {
       vueTemplate,
       imports,
-      components
+      components,
+      datas
     }
   }
 }

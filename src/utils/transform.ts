@@ -17,12 +17,12 @@ export default async function (params: {
   const renderer = createMarkdownToVueRenderer(markdownItOptions, markdownItPlugins, id, alias)
   const contentManager = new ContentManager()
   const isProduction = process.env.NODE_ENV === 'production'
-  const { vueTemplate, imports, components } = renderer(code)
+  const { vueTemplate, imports, components, datas } = renderer(code)
 
   _insertComponentsImportsCode(contentManager, imports)
   _insertHmrCode(contentManager, id, isProduction)
   await _insertCompileCode(contentManager, vueTemplate, isProduction, id)
-  _insertExportCode(contentManager, components)
+  _insertExportCode(contentManager, components, datas)
 
   return contentManager.export()
 }
@@ -77,8 +77,15 @@ async function _insertCompileCode(contentManager: ContentManager, vueTemplate: s
   contentManager.addContext(compiledVueCode)
 }
 
-function _insertExportCode(contentManager: ContentManager, components: string[]) {
+function _insertExportCode(contentManager: ContentManager, components: string[], data: object) {
   contentManager.addExport('render')
   contentManager.addExport('staticRenderFns')
-  contentManager.addDefaultExport(`{ render, staticRenderFns, components: {${components.join(',')}} }`)
+  contentManager.addDefaultExport(`{
+    render,
+    staticRenderFns,
+    components: {${components.join(',')}},
+    data() {
+      return ${JSON.stringify(data)}
+    }
+  }`)
 }

@@ -1,3 +1,14 @@
+# 2.0.8（2023-04-14）
+
+### Fix
+
+* Fixed a bug with profiling configuration.
+
+### Perf
+
+* Better support for configured data rendering.
+* Better support for hmr.
+
 # 2.0.7（2023-03-22）
 
 ### Fix

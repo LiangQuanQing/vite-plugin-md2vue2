@@ -22,8 +22,16 @@ yarn add vite-plugin-md2vue2
 如果你使用的vue版本比 vue@2.7.0 更小，并且本地没有安装 @vue/compiler-sfc@2.x.x，**那么你必须安装和当前本地项目中vue版本一样的 vue-template-compiler**，否则会报错
 
 ```bash
-yarn add vue-template-compiler # 此包的版本必须和vue版本号一致，否则有可能会报错
+yarn add vue-template-compiler # 此包的版本必须和你项目中vue版本号一致，否则有可能会报错
 ```
+
+## 一些特殊的报错
+
+- **全局组件热更新失效**
+  - 有可能你在业务代码中，在注册了全局组件后，你使用了 `Vue.mixin` 全局混入了一些代码（在注册 vuex, vue-router, piana 等库时，它们的内部逻辑也可能会有`Vue.mixin()`）
+  - 这有可能是Vue2的bug，以上操作会让 `Vue.options.components` 清空
+  - 你应该尝试一下在使用 `Vue.mixin` 之后再注册全局组件，或者你可以尝试一下在注册/允许完其他的内容后，最后再注册全局组件，将注册全局组件的优先级放到最后
+
 
 ## 示例
 ```js
@@ -47,10 +55,12 @@ export default defineConfig({
   plugins: [
     md2Vue2Plugin({
       // https://markdown-it.docschina.org/
+      // 可选选项
       markdownItOptions: {
         linkify: true,
         typographer: true
       },
+      // 可选选项
       markdownItPlugins: [emoji]
     }) as PluginOption,
     createVuePlugin()
@@ -149,8 +159,13 @@ perfect!!!
 
 你要像这样，在md文件顶部设置这些配置
 
+// 2.0.4 - 2.0.7
 The count is ${count}  // The count is 3
 Value: ${info.value}   // Value: 6
+
+// >= 2.0.8
+The count is {{ count }}  // The count is 3
+Value: {{ info.value }}   // Value: 6
 ```
 
 ## 在Vue-Router中使用

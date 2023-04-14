@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-md2vue2",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "author": "liangquanqing<834002022@qq.com>",
   "description": "Vite plugin for transforming markdown files to vue2 render functions.",
   "files": [
@@ -32,7 +32,7 @@
   },
   "homepage": "https://github.com/LiangQuanQing/vite-plugin-md2vue2/blob/main/readme.md",
   "scripts": {
-    "build": "tsup src/index.ts --dts --minify --format cjs,esm --clean",
+    "build": "tsup src/index.ts --dts --format cjs,esm --clean",
     "dev": "npm run build -- --watch"
   },
   "peerDependencies": {
@@ -43,12 +43,10 @@
     "vue-template-es2015-compiler": "^1.9.1"
   },
   "devDependencies": {
-    "@types/lodash.get": "^4.4.7",
     "@types/markdown-it": "^12.2.3",
     "@types/node": "^17.0.21",
     "@types/prettier": "^2.6.1",
     "@vue/compiler-sfc": "^2.7.0",
-    "lodash.get": "^4.4.2",
     "tsup": "^6.5.0",
     "typescript": "^4.7.2",
     "vite": "^2.9.0",
