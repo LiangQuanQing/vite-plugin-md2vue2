@@ -1,4 +1,4 @@
-# 2.0.8（2023-04-13）
+# 2.0.8（2023-04-14）
 
 ### Fix
 
@@ -7,6 +7,7 @@
 ### Perf
 
 * Better support for configured data rendering.
+* Better support for hmr.
 
 # 2.0.7（2023-03-22）
 
