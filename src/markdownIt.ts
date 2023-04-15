@@ -76,7 +76,7 @@ function _handleImports(
   const components: string[] = []
   for (let [name, url] of Object.entries(componentsConfig)) {
     let complete = false
-    if (url[0] === '/') {
+    if (url.startsWith('/') || url.startsWith('\\')) {
       url = path.join(process.cwd(), url)
       complete = true
     } else {
@@ -90,9 +90,9 @@ function _handleImports(
       }
     }
     if (!complete) {
-      imports.push({ name, path: path.resolve(path.dirname(id), url) })
+      imports.push({ name, path: path.resolve(path.dirname(id), url).replace(/\\/g, '/') })
     } else {
-      imports.push({ name, path: url })
+      imports.push({ name, path: url.replace(/\\/g, '/') })
     }
     components.push(name)
   }
