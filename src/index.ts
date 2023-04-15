@@ -21,9 +21,13 @@ export default function (options?: Options): PluginOption {
 
     configResolved(resolvedConfig) {
       const aliasConfig = resolvedConfig.resolve.alias
-      const { find, replacement } = aliasConfig[0]
-      if (typeof find === 'string') {
-        alias[find as string] = replacement
+      if (Array.isArray(aliasConfig)) {
+        for (const aliasItem of aliasConfig) {
+          const { find, replacement } = aliasItem
+          if (typeof find === 'string') {
+            alias[find as string] = replacement
+          }
+        }
       }
     },
 
