@@ -4,6 +4,7 @@
   "compilerOptions": {
     "outDir": "dist",
     "module": "commonjs",
+    "target": "ES2015",
     "moduleResolution": "node",
     "strict": true,
     "declaration": true,

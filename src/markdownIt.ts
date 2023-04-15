@@ -79,8 +79,8 @@ function _handleImports(
       url = path.join(process.cwd(), url)
       complete = true
     } else {
-      for (const [aliasKey, aliasPath] of Object.entries(alias)) {
-        const reg = new RegExp(`^${aliasKey}/`)
+      for (const [aliasKey, aliasPath] of alias) {
+        const reg = typeof aliasKey === 'string' ? new RegExp(`^${aliasKey}/`) : aliasKey
         if (reg.test(url)) {
           url = path.resolve(aliasPath, url.replace(reg, ''))
           complete = true
