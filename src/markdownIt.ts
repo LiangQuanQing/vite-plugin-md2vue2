@@ -51,8 +51,7 @@ function _handleConfig(
     try {
       obj = JSON.parse(configText)
     } catch (error) {
-      console.warn('There is a problem with the format of the json data you configured.')
-      console.warn(error)
+      console.error('There is a problem with the format of the json data you configured.(你md文件中定义的json配置格式不正确)')
     }
   }
   const componentsConfig =
