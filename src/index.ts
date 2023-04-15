@@ -22,7 +22,11 @@ export default function (options?: Options): PluginOption {
       if (Array.isArray(aliasConfig)) {
         for (const aliasItem of aliasConfig) {
           const { find, replacement } = aliasItem
-          alias.set(find, replacement)
+          if (typeof find === 'string') {
+            alias.set(find.replace(/[\/\\]$/, ''), replacement.replace(/[\/\\]$/, ''))
+          } else {
+            alias.set(find, replacement)
+          }
         }
       }
     },
