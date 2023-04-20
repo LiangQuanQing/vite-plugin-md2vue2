@@ -73,28 +73,50 @@ function _handleImports(
 } {
   const imports: Imports = []
   const components: string[] = []
+  const getAliasKeyReg = (aliasKey: string | RegExp): RegExp => {
+    const key = typeof aliasKey === "string" && /[\\/]$/.test(aliasKey) ? aliasKey.slice(0, aliasKey.length - 1) : aliasKey
+    return typeof key === "string" ? new RegExp(`^${key}/`) : key;
+  }
+
   for (let [name, url] of Object.entries(componentsConfig)) {
-    let complete = false
-    if (url.startsWith('/') || url.startsWith('\\')) {
-      url = path.join(process.cwd(), url)
-      complete = true
-    } else {
-      for (const [aliasKey, aliasPath] of alias) {
-        const reg = typeof aliasKey === 'string' ? new RegExp(`^${aliasKey}/`) : aliasKey
+    let complete = false;
+    let isAbsolutePath = false
+
+    if (/^[\\/]/.test(url)) {
+      let isMap = false
+      for (const [aliasKey] of alias) {
+        const reg = getAliasKeyReg(aliasKey);
         if (reg.test(url)) {
-          url = path.resolve(aliasPath, url.replace(reg, ''))
-          complete = true
-          break
+          isMap = true
+          break;
+        }
+      }
+      if (!isMap) {
+        isAbsolutePath = true
+        url = path.join(process.cwd(), url);
+        complete = true;
+      }
+    }
+
+    if (!isAbsolutePath) {
+      for (const [aliasKey, aliasPath] of alias) {
+        const reg = getAliasKeyReg(aliasKey);
+        if (reg.test(url)) {
+          url = path.join(aliasPath, url.replace(reg, ""));
+          complete = true;
+          break;
         }
       }
     }
+
     if (!complete) {
-      imports.push({ name, path: path.resolve(path.dirname(id), url).replace(/\\/g, '/') })
+      imports.push({ name, path: path.resolve(path.dirname(id), url).replace(/\\/g, "/") });
     } else {
-      imports.push({ name, path: url.replace(/\\/g, '/') })
+      imports.push({ name, path: url.replace(/\\/g, "/") });
     }
-    components.push(name)
+    components.push(name);
   }
+
   return { imports, components }
 }
 
