@@ -1,8 +1,9 @@
 import MarkdownIt from 'markdown-it'
-import type MarkdownItType from 'markdown-it'
+import path from 'path'
+import { errorLog } from './utils/log'
 import type { Options as MarkdownItOptions } from 'markdown-it'
 import type { Alias } from './index'
-import path from 'path'
+import type MarkdownItType from 'markdown-it'
 
 const RE = /^\s*---([\s\S]+?)---/
 
@@ -51,7 +52,7 @@ function _handleConfig(
     try {
       obj = JSON.parse(configText)
     } catch (error) {
-      console.error('There is a problem with the format of the json data you configured.(你md文件中定义的json配置格式不正确)')
+      errorLog('There is a problem with the format of the json data you configured.(你md文件中定义的json配置格式不正确)')
     }
   }
   const componentsConfig =

@@ -2,6 +2,7 @@ import { createMarkdownToVueRenderer, Imports, MarkdownPlugin } from "../markdow
 import { hotRelaodImportCode } from "../hmr"
 import { Options as MarkdownItOptions } from 'markdown-it'
 import { Alias } from "../index"
+import { errorLog } from './log'
 import ContentManager from "./contentManager"
 import toFunction from "./toFunction"
 import transpile from 'vue-template-es2015-compiler'
@@ -60,7 +61,7 @@ async function _insertCompileCode(contentManager: ContentManager, vueTemplate: s
           staticRenderCode = code.match(/var staticRenderFns\s*=\s*\[[\s\S\]]*\]/)?.[0] || `var staticRenderFns = [];`
         }
       })
-      .catch((err) => console.error(err))
+      .catch((err) => errorLog(err))
   const compiledVueCode = transpile(
     [
       staticRenderCode,
