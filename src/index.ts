@@ -9,21 +9,25 @@ export interface Options {
   markdownItPlugins?: MarkdownPlugin[]
 }
 
-export interface Alias {
-  [alias: string]: string
-}
+export type Alias = Map<string | RegExp, string>
 
 export default function (options?: Options): PluginOption {
-  const alias: Alias = {}
+  const alias: Alias = new Map()
 
   return {
     name: 'vite-plugin-md2vue2',
 
     configResolved(resolvedConfig) {
       const aliasConfig = resolvedConfig.resolve.alias
-      const { find, replacement } = aliasConfig[0]
-      if (typeof find === 'string') {
-        alias[find as string] = replacement
+      if (Array.isArray(aliasConfig)) {
+        for (const aliasItem of aliasConfig) {
+          const { find, replacement } = aliasItem
+          if (typeof find === 'string') {
+            alias.set(find.replace(/[\/\\]$/, ''), replacement.replace(/[\/\\]$/, ''))
+          } else {
+            alias.set(find, replacement)
+          }
+        }
       }
     },
 

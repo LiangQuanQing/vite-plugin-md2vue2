@@ -1,3 +1,14 @@
+# 2.0.9（2023-04-22）
+
+### Fix
+
+* Fix bugs that appear on the "Windows".
+* Fix a bug with alias mapping during component registration.
+
+### Perf
+
+* Optimize error prompt interaction.
+
 # 2.0.8（2023-04-14）
 
 ### Fix

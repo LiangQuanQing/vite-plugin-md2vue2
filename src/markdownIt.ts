@@ -1,8 +1,9 @@
 import MarkdownIt from 'markdown-it'
-import type MarkdownItType from 'markdown-it'
+import path from 'path'
+import { errorLog } from './utils/log'
 import type { Options as MarkdownItOptions } from 'markdown-it'
 import type { Alias } from './index'
-import path from 'path'
+import type MarkdownItType from 'markdown-it'
 
 const RE = /^\s*---([\s\S]+?)---/
 
@@ -51,8 +52,7 @@ function _handleConfig(
     try {
       obj = JSON.parse(configText)
     } catch (error) {
-      console.warn('There is a problem with the format of the json data you configured.')
-      console.warn(error)
+      errorLog('There is a problem with the format of the json data you configured.(你md文件中定义的json配置格式不正确)')
     }
   }
   const componentsConfig =
@@ -74,28 +74,50 @@ function _handleImports(
 } {
   const imports: Imports = []
   const components: string[] = []
+  const getAliasKeyReg = (aliasKey: string | RegExp): RegExp => {
+    const key = typeof aliasKey === "string" && /[\\/]$/.test(aliasKey) ? aliasKey.slice(0, aliasKey.length - 1) : aliasKey
+    return typeof key === "string" ? new RegExp(`^${key}/`) : key;
+  }
+
   for (let [name, url] of Object.entries(componentsConfig)) {
-    let complete = false
-    if (url[0] === '/') {
-      url = path.join(process.cwd(), url)
-      complete = true
-    } else {
-      for (const [aliasKey, aliasPath] of Object.entries(alias)) {
-        const reg = new RegExp(`^${aliasKey}/`)
+    let complete = false;
+    let isAbsolutePath = false
+
+    if (/^[\\/]/.test(url)) {
+      let isMap = false
+      for (const [aliasKey] of alias) {
+        const reg = getAliasKeyReg(aliasKey);
         if (reg.test(url)) {
-          url = path.resolve(aliasPath, url.replace(reg, ''))
-          complete = true
-          break
+          isMap = true
+          break;
+        }
+      }
+      if (!isMap) {
+        isAbsolutePath = true
+        url = path.join(process.cwd(), url);
+        complete = true;
+      }
+    }
+
+    if (!isAbsolutePath) {
+      for (const [aliasKey, aliasPath] of alias) {
+        const reg = getAliasKeyReg(aliasKey);
+        if (reg.test(url)) {
+          url = path.join(aliasPath, url.replace(reg, ""));
+          complete = true;
+          break;
         }
       }
     }
+
     if (!complete) {
-      imports.push({ name, path: path.resolve(path.dirname(id), url) })
+      imports.push({ name, path: path.resolve(path.dirname(id), url).replace(/\\/g, "/") });
     } else {
-      imports.push({ name, path: url })
+      imports.push({ name, path: url.replace(/\\/g, "/") });
     }
-    components.push(name)
+    components.push(name);
   }
+
   return { imports, components }
 }
 
